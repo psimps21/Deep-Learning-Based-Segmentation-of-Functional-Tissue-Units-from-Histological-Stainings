@@ -39,14 +39,10 @@ class SegDataset(Dataset):
         rle = np.array([int(x) for x in rle]).reshape(-1,2)
         mask = DecodeRLE(sample['rle'],(sample['img_height'],sample['img_width']))
 
-
         # Transform data if applicable
         if self.transform:
             image = self.transform(image)
             mask = self.transform(rle)
         
-        sample['image'] = image
-        sample['mask'] = mask
-        
-        return  sample
+        return image, mask, sample
 
