@@ -4,6 +4,7 @@ import pandas as pd
 import torch
 from torch.utils.data import Dataset
 from skimage import io
+from eval_functions import *
 
 
 class SegDataset(Dataset):
@@ -30,18 +31,22 @@ class SegDataset(Dataset):
         img_name = os.path.join(self.root_dir, str(self.annots.iloc[inx,0])+'.tiff')
         image = io.imread(img_name)
 
-        # Store RLE as numpy array
-        rle = self.annots.loc[inx,"rle"].split()
-        rle = np.array([int(x) for x in rle]).reshape(-1,2)
-
         # Retrieve meta data from annotations
         sample = self.annots.loc[inx,:].to_dict()
+
+        # Decode image mask from RLE
+        rle = self.annots.loc[inx,"rle"].split()
+        rle = np.array([int(x) for x in rle]).reshape(-1,2)
+        mask = DecodeRLE(sample['rle'],(sample['img_height'],sample['img_width']))
+
 
         # Transform data if applicable
         if self.transform:
             image = self.transform(image)
+            mask = self.transform(rle)
         
         sample['image'] = image
-        sample['rle'] = rle
+        sample['mask'] = mask
         
         return  sample
+
