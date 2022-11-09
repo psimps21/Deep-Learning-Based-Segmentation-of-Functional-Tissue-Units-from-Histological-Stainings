@@ -37,12 +37,13 @@ class SegDataset(Dataset):
         # Decode image mask from RLE
         rle = self.annots.loc[inx,"rle"].split()
         rle = np.array([int(x) for x in rle]).reshape(-1,2)
-        mask = DecodeRLE(sample['rle'],(sample['img_height'],sample['img_width']))
+        mask = DecodeRLE(rle,(sample['img_height'],sample['img_width']))
+
 
         # Transform data if applicable
         if self.transform:
             image = self.transform(image)
             mask = self.transform(rle)
         
-        return image, mask, sample
+        return  image, mask, sample
 
