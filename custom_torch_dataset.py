@@ -4,6 +4,7 @@ import pandas as pd
 import torch
 from torch.utils.data import Dataset
 from skimage import io
+from PIL import Image
 from eval_functions import *
 
 
@@ -26,10 +27,6 @@ class SegDataset(Dataset):
     def __getitem__(self,inx):
         if torch.is_tensor(inx):
             inx = inx.tolist()
-        
-        # Load image
-        img_name = os.path.join(self.root_dir, str(self.annots.iloc[inx,0])+'.tiff')
-        image = io.imread(img_name)
 
         # Retrieve meta data from annotations
         sample = self.annots.loc[inx,:].to_dict()
@@ -39,11 +36,12 @@ class SegDataset(Dataset):
         rle = np.array([int(x) for x in rle]).reshape(-1,2)
         mask = DecodeRLE(rle,(sample['img_height'],sample['img_width']))
 
+        # Load image
+        img_name = os.path.join(self.root_dir, str(self.annots.iloc[inx,0])+'.tiff')
+        image = Image.open(img_name)
 
         # Transform data if applicable
         if self.transform:
-            image = self.transform(image)
-            mask = self.transform(rle)
-        
+            image,mask = self.transform(image,mask)
+                
         return  image, mask, sample
-
