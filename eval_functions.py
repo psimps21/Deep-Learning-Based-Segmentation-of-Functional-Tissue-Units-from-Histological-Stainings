@@ -1,11 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 # EncodeRLE converts from binary array to RLE
 def EncodeRLE(arr):
     # Flatten array column wise
     flat = arr.ravel('F') # column-wise
     switches = np.nonzero(np.append(flat,0) - np.append(0,flat))[0]
+    if len(switches) == 0:
+      return np.array([])
     counts = np.append(switches,switches[-1]) - np.append(0,switches)
 
     counts = counts[:-1]
@@ -28,3 +31,4 @@ def DiceCoefficient(mask1, mask2):
     tot = np.sum(mask1,axis=[1,2,3]) + np.sum(mask2,axis=[1,2,3])
     return np.mean((2 * intersection) / tot,axis=0)
 
+    
