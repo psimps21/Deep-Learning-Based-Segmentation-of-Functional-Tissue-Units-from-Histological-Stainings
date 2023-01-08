@@ -29,7 +29,7 @@ class DiceLoss(nn.Module):
 
 
 class SegDataset(Dataset):
-    def __init__(self,root_dir,annot_csv, transform=None):
+    def __init__(self,root_dir,annot_csv, transform=None, augment=None):
         """
         Args:
             root_dir (string): Directory with all the images.
@@ -40,6 +40,7 @@ class SegDataset(Dataset):
         self.root_dir = root_dir
         self.annots = pd.read_csv(annot_csv)
         self.transform = transform
+        self.augment = augment
     
     def __len__(self):
         return len(self.annots)
@@ -75,4 +76,3 @@ class SegDataset(Dataset):
         # mask = torch.from_numpy(mask)
         
         return  image, mask, sample
-
