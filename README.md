@@ -1,13 +1,6 @@
-# 02740FinalProject
-Repo for 02740 final project data and models
+# Deep Learning Based Segmentation of Functional Tissue Units from Histological Stainings
+This is the final project of 02740: Bioimage Informatics at Carnegie Mellon University. Kevin Elaba, Parker Simpson, and Yiqing (Melody) Wang collaboratively contributed to the project. The dataset is provided by [Kaggle](https://kaggle.com/competitions/hubmap-organ-segmentation/).
 
-### SegDataset
-A custom pytorch dataset to load an image and it's associated metadata. This class will return the image, mask, and annotations (as dictionary) for a given index in the train/test csv
+Please refer to **BioimageFinalReport.pdf** for detailed information on the methods and review results.
 
-### FCN-Resnet Baseline
-This baseline model uses pretrained fcn_resnet50 from pytorch. We finetune the pretrained parameters to our data and continute training with BCE with logits loss. 
-* Next Steps:
-  * Train for more epochs
-  * Comare BCEWithLogitsLoss and DiceLoss
-  * Try fcn_resnet101
-  * Submit a model to the competition
+Please refer to **in-house_UNet.ipynb**, **pretrained_UNet.ipynb**, and **fcn_baseline.ipynb** for the code for the deep learning models.
